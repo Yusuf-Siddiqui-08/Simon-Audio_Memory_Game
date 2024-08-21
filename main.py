@@ -25,7 +25,7 @@ class Button:
                 if self.position == "center":
                     self.x = (screenSize[0] / 2) - (self.image.get_width() / 2)
                     self.y = (screenSize[1] / 2) - (self.image.get_height() / 2)
-                else:
+                elif isinstance(position, tuple):
                     self.x = self.position[0]
                     self.y = self.position[1]
                 self.rect = self.image.get_rect()
@@ -68,7 +68,8 @@ mi_sound = pygame.mixer.Sound("music/mi.mp3")
 fa_sound = pygame.mixer.Sound("music/fa.mp3")
 soundDict = {1: do_sound, 2: re_sound, 3: mi_sound, 4: fa_sound}
 
-play_button = Button("image", image="play_button.jpg", position="center")
+play_button = Button("image", image="buttons/play_button.jpg", position="center")
+exit_button = Button(button_type="image", image="buttons/exit_button.png", position=((screenSize[0] / 2) - 140,play_button.y + 100))
 
 grid = ((screenSize[0] / 2) - 60, (screenSize[1] / 2) - 60, 110, 110)
 # grid for the buttons. topleft x, topleft y, width, height
@@ -112,13 +113,15 @@ sequence = []
 run = True
 stage = 0
 
-# +-------+-------+
-# | Code  | Stage |
-# +-------+-------+
-# |     0 | MENU  |
-# |     1 | PLAY  |
-# |     2 | DEAD  |
-# +-------+-------+
+
+# +------+--------+
+# | Code | Stage  |
+# +------+--------+
+# |    0 | MENU   |
+# |    1 | SAMPLE |
+# |    2 | TEST   |
+# |    3 | DEAD   |
+# +------+--------+
 # Table made with https://ozh.github.io/ascii-tables/
 
 while run:
@@ -129,12 +132,13 @@ while run:
             run = False
     if stage == 0:
         play_button.draw(screen, eventList)
+        exit_button.draw(screen, eventList)
         if play_button.clicked is True:
-            print("play clicked!")
-            stage = 1.1
-    elif stage == 1.1:
+            stage = 1
+        elif exit_button.clicked is True:
+            run = False
+    elif stage == 1:
         sequence.append(random.randint(1, 4))
-        print(sequence)
         for num in sequence:
             resetGameButtons()
             screen.fill(BLACK)
@@ -150,9 +154,9 @@ while run:
             pygame.display.flip()
             pygame.mixer.Sound.play(soundDict[num])
             pygame.time.delay(2500)
-        stage = 1.2
+        stage = 2
         part = 0
-    elif stage == 1.2:
+    elif stage == 2:
         resetGameButtons()
         drawGameButtons()
         button_clicked = None
@@ -169,10 +173,10 @@ while run:
             if sequence[part] == button_clicked:
                 part += 1
                 if part >= len(sequence):
-                    stage = 1.1
+                    stage = 1
             else:
-                stage = 2
-    elif stage == 2:
+                stage = 3
+    elif stage == 3:
         run = False
 
     pygame.display.flip()
