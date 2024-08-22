@@ -64,6 +64,9 @@ pygame.init()
 pygame.font.init()
 
 screen = pygame.display.set_mode(screenSize)
+pygame.display.set_caption("Simon: Audio Memory Game")
+icon = pygame.image.load("misc/Simon_Audio_Memory_Game_Logo.png")
+pygame.display.set_icon(icon)
 
 font = pygame.font.SysFont("dubai", 100)
 title = font.render("SIMON", True, WHITE)
