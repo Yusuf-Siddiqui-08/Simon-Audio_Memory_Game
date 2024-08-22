@@ -1,8 +1,11 @@
 import pygame
 import random
 
+from pygame import SurfaceType
+
 screenSize = (720, 720)
 
+#colour constants
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
@@ -10,7 +13,6 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 GREY = (128, 128, 128)
 YELLOW = (255, 255, 0)
-
 
 class Button:
     def __init__(self, button_type, image: str = None, rect: tuple = None, position=None, color: tuple = None):
@@ -59,8 +61,14 @@ class Button:
             pygame.draw.rect(screen, self.color, self.rect)
 
 pygame.init()
+pygame.font.init()
 
 screen = pygame.display.set_mode(screenSize)
+
+font = pygame.font.SysFont("dubai", 100)
+title = font.render("SIMON", True, WHITE)
+title_rect = title.get_rect(center=(screenSize[0]/2, 200))
+print(pygame.font.get_fonts())
 
 do_sound = pygame.mixer.Sound("music/do.mp3")
 re_sound = pygame.mixer.Sound("music/re.mp3")
@@ -68,7 +76,7 @@ mi_sound = pygame.mixer.Sound("music/mi.mp3")
 fa_sound = pygame.mixer.Sound("music/fa.mp3")
 soundDict = {1: do_sound, 2: re_sound, 3: mi_sound, 4: fa_sound}
 
-play_button = Button("image", image="buttons/play_button.jpg", position="center")
+play_button = Button(button_type="image", image="buttons/play_button.jpg", position="center")
 exit_button = Button(button_type="image", image="buttons/exit_button.png", position=((screenSize[0] / 2) - 140,play_button.y + 100))
 
 grid = ((screenSize[0] / 2) - 60, (screenSize[1] / 2) - 60, 110, 110)
@@ -107,6 +115,9 @@ def drawGameButtons():
     r_button.draw(screen, eventList)
     g_button.draw(screen, eventList)
 
+def drawGameTitle(surface: SurfaceType):
+    surface.blit(title, title_rect)
+
 
 resetGameButtons()
 sequence = []
@@ -130,6 +141,7 @@ while run:
     for event in eventList:
         if event.type == pygame.QUIT:
             run = False
+    drawGameTitle(screen)
     if stage == 0:
         play_button.draw(screen, eventList)
         exit_button.draw(screen, eventList)
@@ -142,6 +154,7 @@ while run:
         for num in sequence:
             resetGameButtons()
             screen.fill(BLACK)
+            drawGameTitle(screen)
             if num == 1:
                 y_button.color = WHITE
             elif num == 2:
