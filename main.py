@@ -68,7 +68,6 @@ screen = pygame.display.set_mode(screenSize)
 font = pygame.font.SysFont("dubai", 100)
 title = font.render("SIMON", True, WHITE)
 title_rect = title.get_rect(center=(screenSize[0]/2, 200))
-print(pygame.font.get_fonts())
 
 do_sound = pygame.mixer.Sound("music/do.mp3")
 re_sound = pygame.mixer.Sound("music/re.mp3")
@@ -77,12 +76,17 @@ fa_sound = pygame.mixer.Sound("music/fa.mp3")
 soundDict = {1: do_sound, 2: re_sound, 3: mi_sound, 4: fa_sound}
 
 play_button = Button(button_type="image", image="buttons/play_button.jpg", position="center")
-exit_button = Button(button_type="image", image="buttons/exit_button.png", position=((screenSize[0] / 2) - 140,play_button.y + 100))
+exit_button = Button(button_type="image", image="buttons/exit_button.png", position=((screenSize[0] / 2) - 140, play_button.y + 100))
 
-grid = ((screenSize[0] / 2) - 60, (screenSize[1] / 2) - 60, 110, 110)
+button_h = 100
+button_w = 100
+spacer = 10
+grid = ((screenSize[0] / 2) - 105, (screenSize[1] / 2) - 60, 210, 210)
 # grid for the buttons. topleft x, topleft y, width, height
-buttonPosList = [(grid[0], grid[1], 50, 50), (grid[0], grid[1] + 60, 50, 50), (grid[0] + 60, grid[1] + 60, 50, 50),
-                 (grid[0] + 60, grid[1], 50, 50)]
+buttonPosList = [(grid[0], grid[1], button_w, button_h),
+                 (grid[0], grid[1] + button_h + spacer, button_w, button_h),
+                 (grid[0] + button_w + spacer, grid[1] + button_h + spacer, button_w, button_h),
+                 (grid[0] + button_w + spacer, grid[1], button_w, button_h)]
 
 
 # button position list in order of yellow, red, green, blue
