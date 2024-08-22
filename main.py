@@ -157,6 +157,7 @@ while run:
         elif exit_button.clicked is True:
             run = False
     elif stage == 1:
+        pygame.mixer.stop()
         sequence.append(random.randint(1, 4))
         for num in sequence:
             resetGameButtons()
@@ -189,11 +190,12 @@ while run:
         elif b_button.clicked:
             button_clicked = 4
         if button_clicked is not None:
-            pygame.mixer.Sound.play(soundDict[button_clicked])
             if sequence[part] == button_clicked:
                 part += 1
                 if part >= len(sequence):
                     stage = 1
+                else:
+                    pygame.mixer.Sound.play(soundDict[button_clicked])
             else:
                 stage = 3
     elif stage == 3:
